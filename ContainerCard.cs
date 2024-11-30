@@ -11,17 +11,12 @@ using System.IO;
 
 namespace TradingCards
 {
-    public partial class ContainerAllCards : UserControl
+    public partial class ContainerCard : UserControl
     {
         
-        public ContainerAllCards()
+        public ContainerCard()
         {
             InitializeComponent();
-        }
-
-        private void ContainerAllCards_Load(object sender, EventArgs e)
-        {
-            
         }
         
     }

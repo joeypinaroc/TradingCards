@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContainerAllCards.cs">
+    <Compile Include="ContainerCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ContainerAllCards.Designer.cs">
-      <DependentUpon>ContainerAllCards.cs</DependentUpon>
+    <Compile Include="ContainerCard.Designer.cs">
+      <DependentUpon>ContainerCard.cs</DependentUpon>
     </Compile>
     <Compile Include="PlayerData.cs" />
     <Compile Include="Form1.cs">
@@ -61,8 +61,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ContainerAllCards.resx">
-      <DependentUpon>ContainerAllCards.cs</DependentUpon>
+    <EmbeddedResource Include="ContainerCard.resx">
+      <DependentUpon>ContainerCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

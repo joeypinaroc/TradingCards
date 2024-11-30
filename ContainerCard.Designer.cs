@@ -1,6 +1,6 @@
 ﻿namespace TradingCards
 {
-    partial class ContainerAllCards
+    partial class ContainerCard
     {
         /// <summary> 
         /// Required designer variable.
@@ -37,7 +37,6 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.Name = "ContainerAllCards";
             this.Size = new System.Drawing.Size(350, 400);
-            this.Load += new System.EventHandler(this.ContainerAllCards_Load);
             this.ResumeLayout(false);
 
         }
