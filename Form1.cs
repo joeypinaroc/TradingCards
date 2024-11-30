@@ -27,20 +27,20 @@ namespace TradingCards
         };
         Dictionary<string, Image> playerImageDictionary = new Dictionary<string, Image>
         {
-            { "Kobe Bryant",  Image.FromFile("TradingCardsImg\\KobeBryant.png")},
-            { "LeBron James", Image.FromFile("TradingCardsImg\\LebronJames.png") },
-            { "Dwyane Wade", Image.FromFile("TradingCardsImg\\DwyaneWade.png") },
-            { "Giannis Antetokounmpo", Image.FromFile("TradingCardsImg\\Giannis.png") },
-            { "Bradley Beal", Image.FromFile("TradingCardsImg\\BradleyBeal.png") },
-            { "Jimmy Butler", Image.FromFile("TradingCardsImg\\JimmyButler.png") },
-            { "Harrison Barnes", Image.FromFile("TradingCardsImg\\HarrisonBarnes.png") },
-            { "Nicolas Batum", Image.FromFile("TradingCardsImg\\NicolasBatum.png") },
-            { "Patrick Beverley", Image.FromFile("TradingCardsImg\\PatrickBeverley.png") },
-            { "Alec Burks", Image.FromFile("TradingCardsImg\\AlecBurks.png") }
+            { "Kobe Bryant",  Image.FromFile("../../res/TradingCardsImg/KobeBryant.png")},
+            { "LeBron James", Image.FromFile("../../res/TradingCardsImg/LebronJames.png") },
+            { "Dwyane Wade", Image.FromFile("../../res/TradingCardsImg/DwyaneWade.png") },
+            { "Giannis Antetokounmpo", Image.FromFile("../../res/TradingCardsImg/Giannis.png") },
+            { "Bradley Beal", Image.FromFile("../../res/TradingCardsImg/BradleyBeal.png") },
+            { "Jimmy Butler", Image.FromFile("../../res/TradingCardsImg/JimmyButler.png") },
+            { "Harrison Barnes", Image.FromFile("../../res/TradingCardsImg/HarrisonBarnes.png") },
+            { "Nicolas Batum", Image.FromFile("../../res/TradingCardsImg/NicolasBatum.png") },
+            { "Patrick Beverley", Image.FromFile("../../res/TradingCardsImg/PatrickBeverley.png") },
+            { "Alec Burks", Image.FromFile("../../res/TradingCardsImg/AlecBurks.png") }
         };
         public void BuildDBFromFile()
         {
-            string path = "TradingCards.csv";
+            string path = "../../res/TradingCards.csv";
             if (!File.Exists(path))
             {
                 MessageBox.Show("CSV File not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -68,44 +68,37 @@ namespace TradingCards
                 CreateCard(player, yAxis);
                 yAxis += 35 + 5;
             }
+            playerList.SelectedIndex = 0;
         }
 
         private void CreateCard(PlayerData player, int yAxis)
         {   
-            Button btn = new Button();
-            btn.Name = player.Name;
-            btn.Text = player.Name;
-            btn.Tag = player;
-            btn.Location = new Point(50, yAxis);
-            btn.Height = 35;
-            btn.Width = 100;
-
-            btn.Click += Btn_Click;
-            btn.Click += ShowImage;
-
-            this.Controls.Add(btn);
+            playerList.Items.Add(player);
         }
-        private void Btn_Click(object sender, EventArgs e)
+
+        private void playerList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender is Button btn && btn.Tag is PlayerData player)
+            if (sender is ListBox listBox && listBox.SelectedItem is PlayerData player)
             {
-                rtb_Card.Text = "Name: " + player.Name + "\nTeam: " + player.Team + "\nPPG: " + player.PPG + "\nRPG: " + player.RPG + 
-                                "\nAPG: " + player.APG + "\nFG%: " + player.FGP + "\n3P%: " + player.TPG;
-                if(teamColorDictionary.ContainsKey(player.Team))
+                lbl_PlayerName.Text = player.Name;
+                lbl_PlayerTeam.Text = player.Team;
+                rtb_Card.Text = "Points (PPG): " + player.PPG + "\nRebounds (RPG): " + player.RPG +
+                                "\nAssists (APG): " + player.APG + "\nField Goal (FG%): " + player.FGP + "\n3-Points (3P%): " + player.TPG;
+                if (teamColorDictionary.ContainsKey(player.Team))
                 {
                     panel1.BackColor = teamColorDictionary[player.Team];
                 }
-            }
-        }
-        private void ShowImage(object sender, EventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is PlayerData player)
-            {
-                pb_PlayerImage.Image = playerImageDictionary[player.Name];
+                if (playerImageDictionary.ContainsKey(player.Name))
+                {
+                    pb_PlayerImage.Image = playerImageDictionary[player.Name];
+                }
             }
         }
 
-        
+        private void pb_PlayerImage_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     
 }

@@ -47,5 +47,10 @@ namespace TradingCards
             }
             return result;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
