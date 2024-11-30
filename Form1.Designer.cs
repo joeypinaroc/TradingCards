@@ -163,6 +163,7 @@
             this.Controls.Add(this.playerList);
             this.Controls.Add(this.cardFrame);
             this.DoubleBuffered = true;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "NBA Trading Cards";
             this.cardFrame.ResumeLayout(false);
