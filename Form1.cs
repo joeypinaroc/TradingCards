@@ -13,17 +13,17 @@ namespace TradingCards
 {
     public partial class Form1 : Form
     {
-        private int yAxis;
         List<PlayerData> playerData = new List<PlayerData>();
         Dictionary<string, Color> teamColorDictionary = new Dictionary<string, Color>
         {
             { "Lakers", Color.Gold },
             { "Cavaliers", Color.Maroon },
-            { "Heat", Color.Black },
+            { "Heat", Color.Red },
             { "Bucks", Color.Green },
             { "Kings", Color.Purple },
             { "Suns", Color.Orange },
-            { "76ers", Color.Red }
+            { "76ers", Color.Red },
+            { "Pistons", Color.Blue }
         };
         Dictionary<string, Image> playerImageDictionary = new Dictionary<string, Image>
         {
@@ -38,6 +38,8 @@ namespace TradingCards
             { "Patrick Beverley", Image.FromFile("../../res/TradingCardsImg/PatrickBeverley.png") },
             { "Alec Burks", Image.FromFile("../../res/TradingCardsImg/AlecBurks.png") }
         };
+
+
         public void BuildDBFromFile()
         {
             string path = "../../res/TradingCards.csv";
@@ -61,19 +63,40 @@ namespace TradingCards
         {
             InitializeComponent();
 
+
             BuildDBFromFile();
-            yAxis = 80; //btn starting location yAxis
             foreach (var player in playerData)
             {
-                CreateCard(player, yAxis);
-                yAxis += 35 + 5;
+                playerList.Items.Add(player);
             }
+
+            // Get unique teams using LINQ and bind them to the ComboBox
+            var uniqueTeams = playerData.Select(p => p.Team).Distinct().ToList();
+            cb_Team.Items.AddRange(uniqueTeams.ToArray());
+            cb_Team.SelectedIndex = 0;
             playerList.SelectedIndex = 0;
         }
 
-        private void CreateCard(PlayerData player, int yAxis)
-        {   
-            playerList.Items.Add(player);
+        private void cb_Team_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get the selected team from ComboBox
+            var selectedTeam = cb_Team.SelectedItem.ToString();
+
+            // Filter players by the selected team using LINQ
+            var filteredPlayers = playerData.Where(p => (p.Team == selectedTeam) || (selectedTeam == "All")).ToList();
+
+            // Clear the ListBox and add filtered players
+            playerList.Items.Clear();
+            foreach (var player in filteredPlayers)
+            {
+                playerList.Items.Add(player);
+            }
+
+            // Optionally, set the first player as the selected player after filtering
+            if (playerList.Items.Count > 0)
+            {
+                playerList.SelectedIndex = 0;
+            }
         }
 
         private void playerList_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,22 +105,19 @@ namespace TradingCards
             {
                 lbl_PlayerName.Text = player.Name;
                 lbl_PlayerTeam.Text = player.Team;
-                rtb_Card.Text = "Points (PPG): " + player.PPG + "\nRebounds (RPG): " + player.RPG +
-                                "\nAssists (APG): " + player.APG + "\nField Goal (FG%): " + player.FGP + "\n3-Points (3P%): " + player.TPG;
+                rtb_Card.Text = "   Points (PPG): " + player.PPG + "\n   Rebounds (RPG): " + player.RPG +
+                                "\n   Assists (APG): " + player.APG + "\n   Field Goal (FG%): " + player.FGP + "\n   3-Points (3P%): " + player.TPG;
                 if (teamColorDictionary.ContainsKey(player.Team))
                 {
-                    panel1.BackColor = teamColorDictionary[player.Team];
+                    cardFrame.BackColor = teamColorDictionary[player.Team];
+                    pb_PlayerImage.BackColor = teamColorDictionary[player.Team];
+                    rtb_Card.BackColor = teamColorDictionary[player.Team];
                 }
                 if (playerImageDictionary.ContainsKey(player.Name))
                 {
                     pb_PlayerImage.Image = playerImageDictionary[player.Name];
                 }
             }
-        }
-
-        private void pb_PlayerImage_Click(object sender, EventArgs e)
-        {
-
         }
     }
     
