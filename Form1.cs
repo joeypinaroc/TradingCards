@@ -27,22 +27,22 @@ namespace TradingCards
         };
         Dictionary<string, Image> playerImageDictionary = new Dictionary<string, Image>
         {
-            { "Kobe Bryant",  Image.FromFile("../../res/TradingCardsImg/KobeBryant.png")},
-            { "LeBron James", Image.FromFile("../../res/TradingCardsImg/LebronJames.png") },
-            { "Dwyane Wade", Image.FromFile("../../res/TradingCardsImg/DwyaneWade.png") },
-            { "Giannis Antetokounmpo", Image.FromFile("../../res/TradingCardsImg/Giannis.png") },
-            { "Bradley Beal", Image.FromFile("../../res/TradingCardsImg/BradleyBeal.png") },
-            { "Jimmy Butler", Image.FromFile("../../res/TradingCardsImg/JimmyButler.png") },
-            { "Harrison Barnes", Image.FromFile("../../res/TradingCardsImg/HarrisonBarnes.png") },
-            { "Nicolas Batum", Image.FromFile("../../res/TradingCardsImg/NicolasBatum.png") },
-            { "Patrick Beverley", Image.FromFile("../../res/TradingCardsImg/PatrickBeverley.png") },
-            { "Alec Burks", Image.FromFile("../../res/TradingCardsImg/AlecBurks.png") }
+            { "Kobe Bryant",  Image.FromFile("../../Resources/TradingCardsImg/KobeBryant.png")},
+            { "LeBron James", Image.FromFile("../../Resources/TradingCardsImg/LebronJames.png") },
+            { "Dwyane Wade", Image.FromFile("../../Resources/TradingCardsImg/DwyaneWade.png") },
+            { "Giannis Antetokounmpo", Image.FromFile("../../Resources/TradingCardsImg/Giannis.png") },
+            { "Bradley Beal", Image.FromFile("../../Resources/TradingCardsImg/BradleyBeal.png") },
+            { "Jimmy Butler", Image.FromFile("../../Resources/TradingCardsImg/JimmyButler.png") },
+            { "Harrison Barnes", Image.FromFile("../../Resources/TradingCardsImg/HarrisonBarnes.png") },
+            { "Nicolas Batum", Image.FromFile("../../Resources/TradingCardsImg/NicolasBatum.png") },
+            { "Patrick Beverley", Image.FromFile("../../Resources/TradingCardsImg/PatrickBeverley.png") },
+            { "Alec Burks", Image.FromFile("../../Resources/TradingCardsImg/AlecBurks.png") }
         };
 
 
         public void BuildDBFromFile()
         {
-            string path = "../../res/TradingCards.csv";
+            string path = "../../Resources/TradingCards.csv";
             if (!File.Exists(path))
             {
                 MessageBox.Show("CSV File not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
