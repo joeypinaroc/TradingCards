@@ -1,6 +1,6 @@
 ﻿namespace TradingCards
 {
-    partial class ContainerAllCards
+    partial class ContainerCard
     {
         /// <summary> 
         /// Required designer variable.
