@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
+using System.Xml.Linq;
 
 namespace TradingCards
 {
@@ -18,7 +20,7 @@ namespace TradingCards
         public double FGP;
         public double TPG;
 
-        // Constructor for PlayerData class
+        // Constructor for PlayerData class from CSV
         public PlayerData(string csv)
         {
             int index = 0; // Reset index
@@ -31,7 +33,20 @@ namespace TradingCards
             double.TryParse(NextValue(csv, ref index), out FGP);
             double.TryParse(NextValue(csv, ref index), out TPG);
         }
-        
+
+        // Constructor for PlayerData class from Add Player popup
+        public PlayerData(string name, string team, double ppg, double rpg, double apg, double fgp, double tgp)
+        {
+            // Initialize player properties
+            Name = name;
+            Team = team;
+            PPG = ppg;
+            RPG = rpg;
+            APG = apg;
+            FGP = fgp;
+            TPG = tgp;
+        }
+
         // Method to parse the csv file
         private string NextValue(string csv, ref int index)
         {

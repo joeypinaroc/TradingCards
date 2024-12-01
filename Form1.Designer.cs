@@ -100,7 +100,7 @@
             this.cardFrame.Controls.Add(this.rtb_Card);
             this.cardFrame.Controls.Add(this.pb_PlayerImage);
             this.cardFrame.Location = new System.Drawing.Point(583, 27);
-            this.cardFrame.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cardFrame.Margin = new System.Windows.Forms.Padding(4);
             this.cardFrame.Name = "cardFrame";
             this.cardFrame.Size = new System.Drawing.Size(501, 665);
             this.cardFrame.TabIndex = 2;
@@ -131,7 +131,7 @@
             this.rtb_Card.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtb_Card.Font = new System.Drawing.Font("Stencil", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtb_Card.Location = new System.Drawing.Point(44, 469);
-            this.rtb_Card.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtb_Card.Margin = new System.Windows.Forms.Padding(4);
             this.rtb_Card.Name = "rtb_Card";
             this.rtb_Card.ReadOnly = true;
             this.rtb_Card.Size = new System.Drawing.Size(403, 160);
@@ -143,9 +143,9 @@
             // 
             this.pb_PlayerImage.BackColor = System.Drawing.Color.White;
             this.pb_PlayerImage.Location = new System.Drawing.Point(44, 124);
-            this.pb_PlayerImage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pb_PlayerImage.Margin = new System.Windows.Forms.Padding(4);
             this.pb_PlayerImage.Name = "pb_PlayerImage";
-            this.pb_PlayerImage.Padding = new System.Windows.Forms.Padding(15, 15, 15, 15);
+            this.pb_PlayerImage.Padding = new System.Windows.Forms.Padding(15);
             this.pb_PlayerImage.Size = new System.Drawing.Size(403, 346);
             this.pb_PlayerImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pb_PlayerImage.TabIndex = 1;
@@ -171,6 +171,7 @@
             this.btn_Add.TabIndex = 8;
             this.btn_Add.Text = "Add";
             this.btn_Add.UseVisualStyleBackColor = true;
+            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
             // Form1
             // 
@@ -187,9 +188,10 @@
             this.Controls.Add(this.playerList);
             this.Controls.Add(this.cardFrame);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NBA Trading Cards";
             this.cardFrame.ResumeLayout(false);
             this.cardFrame.PerformLayout();

@@ -26,7 +26,8 @@ namespace TradingCards
             { "Kings", Color.Purple },
             { "Suns", Color.Orange },
             { "76ers", Color.Red },
-            { "Pistons", Color.Blue }
+            { "Pistons", Color.Blue },
+            { "Default", Color.Cyan } // Default color
         };
 
         // Dictionary for the image associated with the player
@@ -41,7 +42,8 @@ namespace TradingCards
             { "Harrison Barnes", Image.FromFile("../../Resources/TradingCardsImg/HarrisonBarnes.png") },
             { "Nicolas Batum", Image.FromFile("../../Resources/TradingCardsImg/NicolasBatum.png") },
             { "Patrick Beverley", Image.FromFile("../../Resources/TradingCardsImg/PatrickBeverley.png") },
-            { "Alec Burks", Image.FromFile("../../Resources/TradingCardsImg/AlecBurks.png") }
+            { "Alec Burks", Image.FromFile("../../Resources/TradingCardsImg/AlecBurks.png") },
+            { "Default", Image.FromFile("../../Resources/TradingCardsImg/Default.png") } // Default image
         };
 
         // Form1()
@@ -66,7 +68,6 @@ namespace TradingCards
         {
             string path = "../../Resources/TradingCards.csv"; // Path for csv file
             // Check if file exist
-
             if (!File.Exists(path))
             {
                 // File does not exist. Show error popup.
@@ -122,10 +123,23 @@ namespace TradingCards
                     pb_PlayerImage.BackColor = teamColorDictionary[player.Team];
                     rtb_Card.BackColor = teamColorDictionary[player.Team];
                 }
+                else
+                {
+                    // Player team not in dictionary. Use default color.
+                    cardFrame.BackColor = teamColorDictionary["Default"];
+                    pb_PlayerImage.BackColor = teamColorDictionary["Default"];
+                    rtb_Card.BackColor = teamColorDictionary["Default"];
+                }
+
                 // Update player image
                 if (playerImageDictionary.ContainsKey(player.Name))
                 {
                     pb_PlayerImage.Image = playerImageDictionary[player.Name];
+                }
+                else
+                {
+                    // Player image not in dictionary. Use default image.
+                    pb_PlayerImage.Image = playerImageDictionary["Default"];
                 }
             }
         }
@@ -140,11 +154,52 @@ namespace TradingCards
                 playerData.Remove(selectedPlayer);
                 // Get unique teams using LINQ and update options in team selector combobox
                 var uniqueTeams = playerData.Select(p => p.Team).Distinct().ToList();
-                // Update team list combobox and trigger event to repopulate data
+                // Update team selector combobox and trigger event to repopulate data
                 cb_Team.Items.Clear();
                 cb_Team.Items.Add("All");
                 cb_Team.Items.AddRange(uniqueTeams.ToArray());
                 cb_Team.SelectedIndex = 0;
+            }
+        }
+
+        // Method when a player is added
+        private void btn_Add_Click(object sender, EventArgs e)
+        {
+            // Create AddPlayer Popup
+            using (var addPlayerForm = new Add_Player())
+            {
+                // Show Add Player Popup
+                var result = addPlayerForm.ShowDialog();
+                // Check if the user confirms the action
+                if (result == DialogResult.OK)
+                {
+                    // Get new player details from popup
+                    string Name = addPlayerForm.PlayerName;
+                    string Team = addPlayerForm.Team;
+                    double PPG = addPlayerForm.PPG;
+                    double RPG = addPlayerForm.RPG;
+                    double APG = addPlayerForm.APG;
+                    double FGP = addPlayerForm.FGP;
+                    double TGP = addPlayerForm.TPG;
+
+                    // Create new player object and add to the PlayerData List
+                    PlayerData newPlayer = new PlayerData(Name, Team, PPG, RPG, APG, FGP, TGP);
+                    playerData.Add(newPlayer);
+
+                    // Update player list
+                    playerList.Items.Add(newPlayer);
+                    // Update the team dropdown
+                    var uniqueTeams = playerData.Select(p => p.Team).Distinct().ToList();
+                    cb_Team.Items.Clear();
+                    cb_Team.Items.Add("All");
+                    cb_Team.Items.AddRange(uniqueTeams.ToArray());
+                    cb_Team.SelectedIndex = 0;
+
+                    // Select the newly added player
+                    playerList.SelectedItem = newPlayer;
+                    // Show confirmation popup
+                    MessageBox.Show("Player added successfully.", "Player Added");
+                }
             }
         }
     }
