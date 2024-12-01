@@ -13,99 +13,122 @@ namespace TradingCards
 {
     public partial class Form1 : Form
     {
-        private int yAxis;
+        // Declare list of PlayerData
         List<PlayerData> playerData = new List<PlayerData>();
+        
+        // Dictionary for the color associated with the team
         Dictionary<string, Color> teamColorDictionary = new Dictionary<string, Color>
         {
             { "Lakers", Color.Gold },
             { "Cavaliers", Color.Maroon },
-            { "Heat", Color.Black },
+            { "Heat", Color.Red },
             { "Bucks", Color.Green },
             { "Kings", Color.Purple },
             { "Suns", Color.Orange },
-            { "76ers", Color.Red }
+            { "76ers", Color.Red },
+            { "Pistons", Color.Blue }
         };
+
+        // Dictionary for the image associated with the player
         Dictionary<string, Image> playerImageDictionary = new Dictionary<string, Image>
         {
-            { "Kobe Bryant",  Image.FromFile("TradingCardsImg\\KobeBryant.png")},
-            { "LeBron James", Image.FromFile("TradingCardsImg\\LebronJames.png") },
-            { "Dwyane Wade", Image.FromFile("TradingCardsImg\\DwyaneWade.png") },
-            { "Giannis Antetokounmpo", Image.FromFile("TradingCardsImg\\Giannis.png") },
-            { "Bradley Beal", Image.FromFile("TradingCardsImg\\BradleyBeal.png") },
-            { "Jimmy Butler", Image.FromFile("TradingCardsImg\\JimmyButler.png") },
-            { "Harrison Barnes", Image.FromFile("TradingCardsImg\\HarrisonBarnes.png") },
-            { "Nicolas Batum", Image.FromFile("TradingCardsImg\\NicolasBatum.png") },
-            { "Patrick Beverley", Image.FromFile("TradingCardsImg\\PatrickBeverley.png") },
-            { "Alec Burks", Image.FromFile("TradingCardsImg\\AlecBurks.png") }
+            { "Kobe Bryant",  Image.FromFile("../../Resources/TradingCardsImg/KobeBryant.png")},
+            { "LeBron James", Image.FromFile("../../Resources/TradingCardsImg/LebronJames.png") },
+            { "Dwyane Wade", Image.FromFile("../../Resources/TradingCardsImg/DwyaneWade.png") },
+            { "Giannis Antetokounmpo", Image.FromFile("../../Resources/TradingCardsImg/Giannis.png") },
+            { "Bradley Beal", Image.FromFile("../../Resources/TradingCardsImg/BradleyBeal.png") },
+            { "Jimmy Butler", Image.FromFile("../../Resources/TradingCardsImg/JimmyButler.png") },
+            { "Harrison Barnes", Image.FromFile("../../Resources/TradingCardsImg/HarrisonBarnes.png") },
+            { "Nicolas Batum", Image.FromFile("../../Resources/TradingCardsImg/NicolasBatum.png") },
+            { "Patrick Beverley", Image.FromFile("../../Resources/TradingCardsImg/PatrickBeverley.png") },
+            { "Alec Burks", Image.FromFile("../../Resources/TradingCardsImg/AlecBurks.png") }
         };
+
+        // Form1()
+        public Form1()
+        {
+            InitializeComponent();
+            BuildDBFromFile(); // Read file and create player list
+            foreach (var player in playerData)
+            {
+                playerList.Items.Add(player); // Update listbox display
+            }
+            // Get unique teams using LINQ and update options in team selector combobox
+            var uniqueTeams = playerData.Select(p => p.Team).Distinct().ToList();
+            cb_Team.Items.AddRange(uniqueTeams.ToArray());
+            // Initialize values of player listbox and team selector combobox
+            cb_Team.SelectedIndex = 0;
+            playerList.SelectedIndex = 0;
+        }
+
+        // Method to generate player instance from csv file
         public void BuildDBFromFile()
         {
-            string path = "TradingCards.csv";
+            string path = "../../Resources/TradingCards.csv"; // Path for csv file
+            // Check if file exist
+
             if (!File.Exists(path))
             {
+                // File does not exist. Show error popup.
                 MessageBox.Show("CSV File not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            // Read the csv file
             using (var reader = File.OpenText(path))
             {
                 string input = reader.ReadLine();
                 while ((input = reader.ReadLine()) != null)
                 {
+                    // Create instance of player for every row of file and add to list
                     PlayerData player = new PlayerData(input);
                     playerData.Add(player);
                 }
             }
         }
 
-        public Form1()
+        // Method when team selector combobox is changed
+        private void cb_Team_SelectedIndexChanged(object sender, EventArgs e)
         {
-            InitializeComponent();
-
-            BuildDBFromFile();
-            yAxis = 80; //btn starting location yAxis
-            foreach (var player in playerData)
+            if (sender is ComboBox comboBox)
             {
-                CreateCard(player, yAxis);
-                yAxis += 35 + 5;
+                // Get the selected team
+                var selectedTeam = cb_Team.SelectedItem.ToString();
+                // Filter players belonging to the selected team
+                var filteredPlayers = playerData.Where(p => (p.Team == selectedTeam) || (selectedTeam == "All")).ToList();
+                // Clear the ListBox and update list of players
+                playerList.Items.Clear();
+                foreach (var player in filteredPlayers)
+                {
+                    playerList.Items.Add(player); // Update players list
+                }
+                playerList.SelectedIndex = 0; // Reset selection to the first item
             }
         }
 
-        private void CreateCard(PlayerData player, int yAxis)
-        {   
-            Button btn = new Button();
-            btn.Name = player.Name;
-            btn.Text = player.Name;
-            btn.Tag = player;
-            btn.Location = new Point(50, yAxis);
-            btn.Height = 35;
-            btn.Width = 100;
-
-            btn.Click += Btn_Click;
-            btn.Click += ShowImage;
-
-            this.Controls.Add(btn);
-        }
-        private void Btn_Click(object sender, EventArgs e)
+        // Method when player listbox selection is changed
+        private void playerList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender is Button btn && btn.Tag is PlayerData player)
+            if (sender is ListBox listBox && listBox.SelectedItem is PlayerData player)
             {
-                rtb_Card.Text = "Name: " + player.Name + "\nTeam: " + player.Team + "\nPPG: " + player.PPG + "\nRPG: " + player.RPG + 
-                                "\nAPG: " + player.APG + "\nFG%: " + player.FGP + "\n3P%: " + player.TPG;
-                if(teamColorDictionary.ContainsKey(player.Team))
+                // Update name, team, and statistics display
+                lbl_PlayerName.Text = player.Name;
+                lbl_PlayerTeam.Text = player.Team;
+                rtb_Card.Text = "   Points (PPG): " + player.PPG + "\n   Rebounds (RPG): " + player.RPG +
+                                "\n   Assists (APG): " + player.APG + "\n   Field Goal (FG%): " + player.FGP + "\n   3-Points (3P%): " + player.TPG;
+                // Update card color based on player's team
+                if (teamColorDictionary.ContainsKey(player.Team))
                 {
-                    panel1.BackColor = teamColorDictionary[player.Team];
+                    cardFrame.BackColor = teamColorDictionary[player.Team];
+                    pb_PlayerImage.BackColor = teamColorDictionary[player.Team];
+                    rtb_Card.BackColor = teamColorDictionary[player.Team];
+                }
+                // Update player image
+                if (playerImageDictionary.ContainsKey(player.Name))
+                {
+                    pb_PlayerImage.Image = playerImageDictionary[player.Name];
                 }
             }
         }
-        private void ShowImage(object sender, EventArgs e)
-        {
-            if (sender is Button btn && btn.Tag is PlayerData player)
-            {
-                pb_PlayerImage.Image = playerImageDictionary[player.Name];
-            }
-        }
-
-        
     }
     
 }
