@@ -128,6 +128,23 @@ namespace TradingCards
                 }
             }
         }
+
+        // Method when a player is removed
+        private void btn_Remove_Click(object sender, EventArgs e)
+        {
+            // Check if selected item is valid and there are still multiple players in list
+            if ((playerList.SelectedItem is PlayerData selectedPlayer) && (playerData.Count > 1))
+            {
+                // Remove the player from the playerData list
+                playerData.Remove(selectedPlayer);
+                // Get unique teams using LINQ and update options in team selector combobox
+                var uniqueTeams = playerData.Select(p => p.Team).Distinct().ToList();
+                // Update team list combobox and trigger event to repopulate data
+                cb_Team.Items.Clear();
+                cb_Team.Items.Add("All");
+                cb_Team.Items.AddRange(uniqueTeams.ToArray());
+                cb_Team.SelectedIndex = 0;
+            }
+        }
     }
-    
 }
