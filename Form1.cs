@@ -15,7 +15,7 @@ namespace TradingCards
     {
         // Declare list of PlayerData
         List<PlayerData> playerData = new List<PlayerData>();
-
+        
         // Dictionary for the color associated with the team
         Dictionary<string, Color> teamColorDictionary = new Dictionary<string, Color>
         {
@@ -66,6 +66,7 @@ namespace TradingCards
         {
             string path = "../../Resources/TradingCards.csv"; // Path for csv file
             // Check if file exist
+
             if (!File.Exists(path))
             {
                 // File does not exist. Show error popup.
